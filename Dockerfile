@@ -8,7 +8,7 @@ COPY bun.lock* ./
 RUN bun install --frozen-lockfile
 
 # ---- Gera Prisma Client ----
-RUN bunx prisma generate
+RUN bunx prisma generate --schema=./prisma/schema.prisma
 
 # ---- Copia código e builda ----
 COPY . .
