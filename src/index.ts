@@ -26,4 +26,7 @@ new Elysia()
   .use(gatewaysRoutes)
   .use(routes)
   .get('/health', () => ({ ok: true }))
-  .listen(Number(process.env.PORT), () => console.info(`Auth up on :${process.env.PORT}`))
+  .listen({
+    port: Number(process.env.PORT),
+    hostname: "0.0.0.0",
+  }, () => console.info(`Auth up on :${process.env.PORT}`))
