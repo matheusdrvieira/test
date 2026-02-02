@@ -27,6 +27,7 @@ COPY --from=base /app/node_modules ./node_modules
 COPY --from=base /app/prisma ./prisma
 COPY --from=base /app/dist ./dist
 COPY --from=base /app/package.json ./package.json
+COPY --from=base /app/prisma.config.ts ./prisma.config.ts
 
 EXPOSE 3000
 CMD ["sh", "-lc", "bunx prisma migrate deploy --config=prisma.config.ts && bun dist/index.js"]
