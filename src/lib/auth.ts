@@ -27,7 +27,7 @@ export const auth = betterAuth({
                     type: SendMailEnum.MAGIC_LINK,
                     url: url
                 }
-                await new SendMailService().execute(input);
+                new SendMailService().execute(input);
             }
         })
     ],
@@ -52,7 +52,7 @@ export const auth = betterAuth({
                 type: SendMailEnum.RESET_PASSWORD,
                 url: url
             }
-            await new SendMailService().execute(input);
+            new SendMailService().execute(input);
         }
     },
     emailVerification: {
@@ -63,7 +63,7 @@ export const auth = betterAuth({
                 type: SendMailEnum.VERIFY_EMAIL,
                 url: url
             }
-            await new SendMailService().execute(input);
+            new SendMailService().execute(input);
         },
         afterEmailVerification: async ({ email, name }) => {
             const input: SendMailProps = {
@@ -71,7 +71,7 @@ export const auth = betterAuth({
                 name: name,
                 type: SendMailEnum.WELCOME
             }
-            await new SendMailService().execute(input);
+            new SendMailService().execute(input);
         },
         autoSignInAfterVerification: true,
     },
