@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Users {
+  id            String     @id
+  name          String
+  email         String
+  emailVerified Boolean    @default(false)
+  image         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  sessions      Sessions[]
+  accounts      Accounts[]
+
+  members      Members[]
+  invitations  Invitations[]
+  integrations Integrations[]
+
+  @@unique([email])
+  @@map("users")
+}
+
+model Sessions {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  activeOrganizationId String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Accounts {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  users                 Users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verifications {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
+model Organizations {
+  id          String        @id
+  name        String
+  slug        String
+  logo        String?
+  createdAt   DateTime
+  metadata    String?
+  members     Members[]
+  invitations Invitations[]
+
+  @@unique([slug])
+  @@map("organizations")
+}
+
+model Members {
+  id             String        @id
+  organizationId String
+  organizations  Organizations @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  users          Users         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String        @default("member")
+  createdAt      DateTime
+
+  @@index([organizationId])
+  @@index([userId])
+  @@map("members")
+}
+
+model Invitations {
+  id             String        @id
+  organizationId String
+  organizations  Organizations @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String        @default("pending")
+  expiresAt      DateTime
+  createdAt      DateTime      @default(now())
+  inviterId      String
+  users          Users         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitations")
+}
+
+model Jwkss {
+  id         String    @id
+  publicKey  String
+  privateKey String
+  createdAt  DateTime
+  expiresAt  DateTime?
+
+  @@map("jwkss")
+}
+
+model Integrations {
+  id        String   @id @default(uuid())
+  userId    String
+  provider  String
+  accountId String
+  status    String
+  encrypted Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, accountId, userId])
+  @@index([provider])
+  @@map("integrations")
+}

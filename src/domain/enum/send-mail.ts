@@ -1,0 +1,7 @@
+export enum SendMailEnum {
+    REGISTER = "REGISTER",
+    MAGIC_LINK = "MAGIC_LINK",
+    VERIFY_EMAIL = "VERIFY_EMAIL",
+    WELCOME = "WELCOME",
+    RESET_PASSWORD = "RESET_PASSWORD",
+}
