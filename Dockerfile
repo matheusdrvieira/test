@@ -3,8 +3,8 @@ FROM oven/bun:1.3.6 AS base
 WORKDIR /app
 
 # ---- Instala deps ----
-COPY bun.lockb package.json ./
-COPY prisma ./prisma
+COPY package.json ./
+COPY bun.lock* ./
 RUN bun install --frozen-lockfile
 
 # ---- Gera Prisma Client ----
