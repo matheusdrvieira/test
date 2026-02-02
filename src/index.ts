@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import { openapiPlugin } from '@/http/plugins/openapi';
 import { auth } from '@/lib/auth';
 import { cors } from "@elysiajs/cors";

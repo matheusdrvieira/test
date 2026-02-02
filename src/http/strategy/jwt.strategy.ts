@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { createRemoteJWKSet, jwtVerify } from "jose";
 
 export interface AuthPayload {
