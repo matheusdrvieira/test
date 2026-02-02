@@ -29,4 +29,4 @@ COPY --from=base /app/dist ./dist
 COPY --from=base /app/package.json ./package.json
 
 EXPOSE 3000
-CMD ["sh", "-lc", "bunx prisma migrate deploy && bun dist/index.js"]
+CMD ["sh", "-lc", "bunx prisma migrate deploy --config=prisma.config.ts && bun dist/index.js"]
