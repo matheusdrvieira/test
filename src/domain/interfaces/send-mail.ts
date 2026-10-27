@@ -10,4 +10,5 @@ export interface SendMailProps {
     name: string;
     type: SendMailEnum;
     url?: string;
+    otp?: string;
 }

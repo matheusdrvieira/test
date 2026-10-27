@@ -1,13 +1,11 @@
 import "dotenv/config";
 
-import { openapiPlugin } from '@/http/plugins/openapi';
-import { auth } from '@/lib/auth';
+import { openapiPlugin } from '@/shared/docs/openapi';
+import { auth } from '@/shared/lib/auth';
 import { cors } from "@elysiajs/cors";
 import { staticPlugin } from "@elysiajs/static";
 import { Elysia } from 'elysia';
-import { gatewaysRoutes } from './http/routes/gateways.route';
-import { oauthRoutes } from './http/routes/oauth.route';
-import { routes } from './http/routes/user.route';
+import { routes } from "./modules/index.route";
 
 new Elysia()
   .use(cors({
@@ -22,8 +20,6 @@ new Elysia()
     prefix: "/assets",
   }))
   .mount(auth.handler)
-  .use(oauthRoutes)
-  .use(gatewaysRoutes)
   .use(routes)
   .get('/health', () => ({ ok: true }))
   .listen({

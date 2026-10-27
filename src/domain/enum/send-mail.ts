@@ -4,4 +4,5 @@ export enum SendMailEnum {
     VERIFY_EMAIL = "VERIFY_EMAIL",
     WELCOME = "WELCOME",
     RESET_PASSWORD = "RESET_PASSWORD",
+    TWO_FACTOR_OTP = "TWO_FACTOR_OTP",
 }

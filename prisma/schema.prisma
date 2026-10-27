@@ -21,6 +21,9 @@ model Users {
   invitations  Invitations[]
   integrations Integrations[]
 
+  twoFactorEnabled Boolean?     @default(false)
+  twofactors       TwoFactors[]
+
   @@unique([email])
   @@map("users")
 }
@@ -120,16 +123,6 @@ model Invitations {
   @@map("invitations")
 }
 
-model Jwkss {
-  id         String    @id
-  publicKey  String
-  privateKey String
-  createdAt  DateTime
-  expiresAt  DateTime?
-
-  @@map("jwkss")
-}
-
 model Integrations {
   id        String   @id @default(uuid())
   userId    String
@@ -145,4 +138,16 @@ model Integrations {
   @@unique([provider, accountId, userId])
   @@index([provider])
   @@map("integrations")
+}
+
+model TwoFactors {
+  id          String @id
+  secret      String
+  backupCodes String
+  userId      String
+  users       Users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([secret])
+  @@index([userId])
+  @@map("twoFactors")
 }
